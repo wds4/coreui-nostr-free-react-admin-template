@@ -19,16 +19,32 @@ import {
   cilSettings,
   cilTask,
   cilUser,
+  cilArrowThickFromRight,
+  cilArrowThickFromLeft,
 } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 
-import avatar8 from './../../assets/images/avatars/8.jpg'
+import { useDispatch, useSelector } from 'react-redux'
+import { wipeActiveProfile } from '../../redux/features/profile/slice'
 
 const AppHeaderDropdown = () => {
+  const signedIn = useSelector((state) => state.profile.signedIn)
+  const myPictureUrl = useSelector((state) => state.profile.picture)
+  const dispatch = useDispatch()
+  const runLogout = () => {
+    console.log('runLogout')
+    dispatch(wipeActiveProfile())
+  }
+  let loginItem = 'show'
+  let logoutItem = 'hide'
+  if (signedIn) {
+    loginItem = 'hide'
+    logoutItem = 'show'
+  }
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0 pe-0" caret={false}>
-        <CAvatar src={avatar8} size="md" />
+        <CAvatar src={myPictureUrl} size="md" />
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-body-secondary fw-semibold mb-2">Account</CDropdownHeader>
@@ -87,6 +103,14 @@ const AppHeaderDropdown = () => {
         <CDropdownItem href="#">
           <CIcon icon={cilLockLocked} className="me-2" />
           Lock Account
+        </CDropdownItem>
+        <CDropdownItem onClick={runLogout} href="#" className={logoutItem}>
+          <CIcon icon={cilArrowThickFromRight} className="me-2" />
+          Logout
+        </CDropdownItem>
+        <CDropdownItem href="#/login" className={loginItem}>
+          <CIcon icon={cilArrowThickFromLeft} className="me-2" />
+          Login
         </CDropdownItem>
       </CDropdownMenu>
     </CDropdown>
