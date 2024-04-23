@@ -1,10 +1,11 @@
-import React, { Suspense, useEffect } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 import { HashRouter, Route, Routes } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { NDKProvider } from '@nostr-dev-kit/ndk-react'
 
 import { CSpinner, useColorModes } from '@coreui/react'
 import './scss/style.scss'
+import { aDefaultRelays } from './const'
 
 // Containers
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
@@ -33,10 +34,27 @@ const App = () => {
     setColorMode(storedTheme)
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+  // keep nostr relays updated based on user profile
+  const [ndkProviderRelays, setNdkProviderRelays] = useState(aDefaultRelays)
+  const myCurrentProfileKind3Relays = useSelector((state) => state.profile.kind3.relays)
+  useEffect(() => {
+    if (Object.keys(myCurrentProfileKind3Relays).length > 0) {
+      const aRelaysUpdated = []
+      Object.keys(myCurrentProfileKind3Relays).forEach((relay, item) => {
+        const read = myCurrentProfileKind3Relays[relay]?.read
+        if (read) {
+          aRelaysUpdated.push(relay)
+        }
+      })
+      setNdkProviderRelays(aRelaysUpdated)
+    } else {
+      // if user has no active relays, then use the default relays
+      setNdkProviderRelays(aDefaultRelays)
+    }
+  }, [myCurrentProfileKind3Relays])
+
   return (
-    <NDKProvider
-      relayUrls={['wss://relay.damus.io', 'wss://relay.snort.social', 'wss://purplepag.es']}
-    >
+    <NDKProvider relayUrls={ndkProviderRelays}>
       <HashRouter>
         <Suspense
           fallback={

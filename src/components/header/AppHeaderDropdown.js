@@ -32,7 +32,6 @@ const AppHeaderDropdown = () => {
   const myPictureUrl = useSelector((state) => state.profile.picture)
   const dispatch = useDispatch()
   const runLogout = () => {
-    console.log('runLogout')
     dispatch(wipeActiveProfile())
   }
   let loginItem = 'show'

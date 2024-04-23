@@ -24,14 +24,3 @@ export const store = configureStore({
 export default store
 
 export const persistor = persistStore(store)
-
-/*
-Note: following this guide to implement redux-persist
-https://dev.to/mihomihouk/persisting-state-on-page-refresh-in-reactredux-app-58cf
-
-Beware, redux-persist has not been maintained for 3 years.
-
-I have not yet wrapped root components (index.js) with PersistGate, and yet it magically seems to work anyway ... ?!?
-
-I have now updated (index.js) with PersistGate, minus loading={<MainLoader />} bc I don't know what that does, and it still works.
-*/
