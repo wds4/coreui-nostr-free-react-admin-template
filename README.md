@@ -1,70 +1,156 @@
-# CoreUI Free React Admin Template [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?text=CoreUI%20-%20Free%React%204%20Admin%20Template%20&url=https://coreui.io&hashtags=bootstrap,admin,template,dashboard,panel,free,angular,react,vue)
+This is a fork of [CoreUI Free React Admin Template](https://github.com/coreui/coreui-free-react-admin-template) with basic nostr functionality added. If you know react, want to build a nostr web app, and prefer an admin / dashboard style template, this may be of use to you! 
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
-[![@coreui coreui](https://img.shields.io/badge/@coreui%20-coreui-lightgrey.svg?style=flat-square)](https://github.com/coreui/coreui)
-[![npm package][npm-coreui-badge]][npm-coreui]
-[![NPM downloads][npm-coreui-download]][npm-coreui]
-[![@coreui react](https://img.shields.io/badge/@coreui%20-react-lightgrey.svg?style=flat-square)](https://github.com/coreui/react)
-[![npm package][npm-coreui-react-badge]][npm-coreui-react]
-[![NPM downloads][npm-coreui-react-download]][npm-coreui-react]  
+This template is hosted on Vercel (see link in the About section of this repo), and updates to the main branch are automatically pushed to the live site and deployed. Similar steps could be followed for different starting templates or different hosting services (in place of Vercel). 
 
-[npm-coreui]: https://www.npmjs.com/package/@coreui/coreui
-[npm-coreui-badge]: https://img.shields.io/npm/v/@coreui/coreui.png?style=flat-square
-[npm-coreui-download]: https://img.shields.io/npm/dm/@coreui/coreui.svg?style=flat-square
-[npm-coreui-react]: https://www.npmjs.com/package/@coreui/react
-[npm-coreui-react-badge]: https://img.shields.io/npm/v/@coreui/react.png?style=flat-square
-[npm-coreui-react-download]: https://img.shields.io/npm/dm/@coreui/react.svg?style=flat-square
-[npm]: https://www.npmjs.com/package/@coreui/react
+## Nostr features
 
-[![Bootstrap Admin Template](https://assets.coreui.io/products/coreui-free-bootstrap-admin-template-light-dark.webp)](https://coreui.io/product/free-react-admin-template/)
+Implemented:
+- two nostr login methods: login with extension and login with secret (user supplied or generate a new one)
+- default relay list
+- data persistence using redux-persist (caution: this lib has not been well maintained, seems abandoned)
+- logout, which clears redux store (profile info)
+- download your profile relays and follows and updates active relays list to your relays
+- profile page which downloads your kind 1 notes (but does not turn them into a feed)
 
-CoreUI is meant to be the UX game changer. Pure & transparent code is devoid of redundant components, so the app is light enough to offer ultimate user experience. This means mobile devices also, where the navigation is just as easy and intuitive as on a desktop or laptop. The CoreUI Layout API lets you customize your project for almost any device – be it Mobile, Web or WebApp – CoreUI covers them all!
+Caution with using your nsec! This does not yet salt the nsec, although that may be added later.
 
-## Table of Contents
+This does NOT implement:
+- several other login methods
+- update your profile
+- update relays or follows
+- show any content feeds
+- view other profiles
 
-* [Versions](#versions)
-* [CoreUI PRO](#coreui-pro)
-* [CoreUI PRO React Admin Templates](#coreui-pro-react-admin-templates)
-* [Quick Start](#quick-start)
-* [Installation](#installation)
-* [Basic usage](#basic-usage)
-* [What's included](#whats-included)
-* [Documentation](#documentation)
-* [Versioning](#versioning)
-* [Creators](#creators)
-* [Community](#community)
-* [Support CoreUI Development](#support-coreui-development)
-* [Copyright and License](#copyright-and-license)
+## This document
 
-## Versions
+This README is a record of the steps I took to fork the Core UI template, to set it up on [vercel](https://vercel.com) for hosting, and to incorporate basic nostr functionality. Mostly, this is for myself in case I need to retrace my steps. 
 
-* [CoreUI Free Bootstrap Admin Template](https://github.com/coreui/coreui-free-bootstrap-admin-template)
-* [CoreUI Free Angular Admin Template](https://github.com/coreui/coreui-free-angular-admin-template)
-* [CoreUI Free React.js Admin Template (Vite)](https://github.com/coreui/coreui-free-react-admin-template)
-* [CoreUI Free React.js Admin Template (Create React App)](https://github.com/coreui/coreui-free-react-admin-template-cra)
-* [CoreUI Free Vue.js Admin Template](https://github.com/coreui/coreui-free-vue-admin-template)
+# Steps
 
-## CoreUI PRO
+## fork CoreUI template
 
-* 💪  [CoreUI PRO Angular Admin Template](https://coreui.io/product/angular-dashboard-template/)
-* 💪  [CoreUI PRO Bootstrap Admin Template](https://coreui.io/product/bootstrap-dashboard-template/)
-* 💪  [CoreUI PRO React Admin Template](https://coreui.io/product/react-dashboard-template/)
-* 💪  [CoreUI PRO Vue Admin Template](https://coreui.io/product/vue-dashboard-template/)
+Go to `https://github.com/coreui/coreui-free-react-admin-template` and fork the template, naming it `coreui-nostr-free-react-admin-template`.
 
-## CoreUI PRO React Admin Templates
+Clone it Locally:
 
-| Default Theme | Light Theme |
-| --- | --- |
-| [![CoreUI PRO React Admin Template](https://coreui.io/images/templates/coreui_pro_default_light_dark.webp)](https://coreui.io/product/react-dashboard-template/?theme=default) | [![CoreUI PRO React Admin Template](https://coreui.io/images/templates/coreui_pro_light_light_dark.webp)](https://coreui.io/product/react-dashboard-template/?theme=light)|
+```
+git clone https://github.com/wds4/coreui-nostr-free-react-admin-template.git
+cd coreui-nostr-free-react-admin-template
+npm install
+npm start
+```
 
-| Default Theme v3 | Light Theme v3 |
-| --- | --- |
-| [![CoreUI PRO React Admin Template](https://coreui.io/images/templates/coreui_pro_default_v3_light_dark.webp)](https://coreui.io/product/react-dashboard-template/?theme=default-v3) | [![CoreUI PRO React Admin Template](https://coreui.io/images/templates/coreui_pro_light_v3_light_dark.webp)](https://coreui.io/product/react-dashboard-template/?theme=light)|
+Should indicate that it is running on http://localhost:3000/
+
+Update package.json with this:
+
+```
+"engines": {
+  "node": "20.x"
+},
+```
+
+and push changes to github repo.
+
+## Vercel
+
+Go to `vercel.com`, sign in using github account, then Add New Project. Should see option to Import Git Repository. Select the repo we just created. 
+- Framework Preset is Vite. (automatically)
+- Did NOT select src as the root directory.
+- Under Build and Output Settings, next to Output Directory, click Override and enter `build`. 
+- Under Install Command, click Override and enter `npm install`. 
+- No Environmental Variables. 
+- Click Deploy.
+
+## Add dependencies
+
+These are all of the dependencies that must be added to the CoreUI template.
+
+```
+npm install @nostr-dev-kit/ndk 
+npm install @nostr-dev-kit/ndk-react 
+npm install nostr-tools
+npm install @noble/hashes
+
+npm install @reduxjs/toolkit
+npm install redux-persist
+```
+
+Push changes, make sure Vercel updates and still works.
+
+## reorganize redux store
+
+Two reasons to reorganize the store. First, I anticipate having lots of data and want to divide it into multiple reducer slices, each with its own folder in src/redux/features. Second, it's the method that I am accustomed to. Don't know whether it's actually better or not.
+
+Steps:
+- Add src/redux folder, which includes store.js, profile and ui folders.
+- delete the old rc/store.js
+- Replace state.sidebarShow with state.ui.sidebarShow in AppHeader.js and AppSidebar.js
+- Replace state.sidebarUnfoldable with state.ui.sidebarUnfoldable in AppSidebar.js
+- Import updateSidebarShow to AppHeader.js. and add it to onClick under CHeaderToggler
+- Import updateSidebarShow to AppSidebar.js.
+- Import updateSidebarUnfoldable to AppSidebar.js. and add it to onClick under CSidebarToggler
+- In `index.js`, replace `import store from './store'` with `import { persistor, store } from './redux/store'`. 
+- In `index.js`, import PersistGate and wrap <App /> with <PersistGate>.
+- Add `src/const.js`
+
+Rationale for redux-persist: I discovered that a refresh of any page will clear out redux store, effectively logging the user out. To prevent this from happening, I made use of the redux-persist package. Beware, this library is no longer maintained!
+
+Note: following this guide to implement redux-persist
+https://dev.to/mihomihouk/persisting-state-on-page-refresh-in-reactredux-app-58cf
+
+commit of the above changes: `restructure redux`
+
+## nostr login using extension and secret.
+
+Steps:
+- Update AppHeaderDropdown by adding Login and Logout links to bottom, check whether signed in, add runLogout function, replace avatar8 with myPictureUrl.
+- Update _custom.scss with .show and .hide.
+
+commit of the above changes: `login and logout links`
+
+Steps:
+- Major changes to Login.js page
+- Add helpers folder, with nip19 and relays.js.
+- Update App.js with NDKProvider.
+- Add myProfile/MyProfile.js under views.
+- Update routes.js with myProfile
+- Update Profile link in AppHeaderDropdown.js. 
+- Update DefaultLayout, major revisions.
+
+commit of the above changes: `login using extension and secret`
+
+## Refining the template
+
+Fork `coreui-nostr-free-react-admin-template` to create `coreui-nostr-free-react-admin-template-B`, then:
+- delete unrelated menu items and generally clean up the navigation
+- have a page for follows
+- make basic profile page for other user profiles
+- show notes for users - list by id, nothing more
+- make settings page to view relays
+
+Then turn it into a template, fork it in two, maintain 4 repositories, host each on vercel:
+- the early version of the template, at https://coreui-nostr-free-react-admin-template.vercel.app
+- the more polished version of the template, probably at https://coreui-nostr-free-react-admin-template-b.vercel.app
+- one repo to rebuild Plex, which will do losts of things, and will introduce a complex menu navigation system for multiple apps. https://brainstorm.ninja
+- one site with a very focused purpose, which is to demo the basic grapevine app; manage contexts and trust attestations, and calculate and save influence scores. https://tapestry,ninja
+
+## Bugs
+
+on smartphone, left side panel opens with button but does not close unless you touch somewhere outside the sidebar. X does not close sidebar. This does however work on laptop. Maybe need to get rid of:
+dispatch({ type: 'set', sidebarShow: visible })
+and replace with:
+dispatch(updateSidebarShow(visible))
+in AppSidebar.js ? (Done but not pushed to github)
+bc it works correctly in AppHeader but does not work correctly in AppSidebar.
+
+Not sure whether I am downloading events properly; useEffect, triggered by changes in
+- fetchEvents(filter) when downloading events
+- getProfile(myNpub) when downloading my profile data
 
 ## Quick Start
 
-- [Download the latest release](https://github.com/coreui/coreui-free-react-admin-template/archive/refs/heads/main.zip)
-- Clone the repo: `git clone https://github.com/coreui/coreui-free-react-admin-template.git`
+- Clone the repo: `git clone https://github.com/wds4/coreui-nostr-free-react-admin-template.git`
 
 ### Installation
 
@@ -110,75 +196,6 @@ or
 $ yarn build
 ```
 
-## What's included
-
-Within the download you'll find the following directories and files, logically grouping common assets and providing both compiled and minified variations. You'll see something like this:
-
-```
-coreui-free-react-admin-template
-├── public/          # static files
-│   ├── favicon.ico
-│   └── manifest.json
-│
-├── src/             # project root
-│   ├── assets/      # images, icons, etc.
-│   ├── components/  # common components - header, footer, sidebar, etc.
-│   ├── layouts/     # layout containers
-│   ├── scss/        # scss styles
-│   ├── views/       # application views
-│   ├── _nav.js      # sidebar navigation config
-│   ├── App.js
-│   ├── index.js
-│   ├── routes.js    # routes config
-│   └── store.js     # template state example 
-│
-├── index.html       # html template
-├── ...
-├── package.json
-├── ...
-└── vite.config.mjs  # vite config
-```
-
-## Documentation
-
-The documentation for the CoreUI Admin Template is hosted at our website [CoreUI for React](https://coreui.io/react/docs/templates/installation/)
-
-## Versioning
-
-For transparency into our release cycle and in striving to maintain backward compatibility, CoreUI Free Admin Template is maintained under [the Semantic Versioning guidelines](http://semver.org/).
-
-See [the Releases section of our project](https://github.com/coreui/coreui-free-react-admin-template/releases) for changelogs for each release version.
-
-## Creators
-
-**Łukasz Holeczek**
-
-* <https://twitter.com/lukaszholeczek>
-* <https://github.com/mrholek>
-
-**Andrzej Kopański**
-
-* <https://github.com/xidedix>
-
-**CoreUI Team**
-
-* <https://twitter.com/core_ui>
-* <https://github.com/coreui>
-* <https://github.com/orgs/coreui/people>
-
-## Community
-
-Get updates on CoreUI's development and chat with the project maintainers and community members.
-
-- Follow [@core_ui on Twitter](https://twitter.com/core_ui).
-- Read and subscribe to [CoreUI Blog](https://coreui.ui/blog/).
-
-## Support CoreUI Development
-
-CoreUI is an MIT-licensed open source project and is completely free to use. However, the amount of effort needed to maintain and develop new features for the project is not sustainable without proper financial backing. You can support development by buying the [CoreUI PRO](https://coreui.io/pricing/?framework=react&src=github-coreui-free-react-admin-template) or by becoming a sponsor via [Open Collective](https://opencollective.com/coreui/).
-
 ## Copyright and License
-
-copyright 2024 creativeLabs Łukasz Holeczek.   
 
 Code released under [the MIT license](https://github.com/coreui/coreui-free-react-admin-template/blob/main/LICENSE).
